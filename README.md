@@ -73,17 +73,17 @@ Phase 4 attempts to answer "What is this network likely to do next?" using histo
 - **Investigator Report**: Synthesizes the Genome, Echo, Surgery, and Prediction results into a concise brief. This system is deterministic by default but can optionally utilize an LLM adapter.
 - **Strict Information Barrier**: The predictor is explicitly barred from accessing future temporal transactions or simulator ground-truth states, guaranteeing that predictions are authentic forward-inferences.
 
-## 14. Phase 5 Final Intelligence & Validation
-Phase 5 completes the investigation loop:
-- **AI Investigator (SAR Draft)**: Uses a multi-signal priority heuristic (combining Anomaly, Coordination, Genome, Surgery, and Prediction) to trigger a deterministic SAR Draft. LLM capability is integrated but optional.
-- **Richer Graph Features**: Implemented `betweenness_centrality` and temporal motif detection (`Fan-In`/`Fan-Out` loops) into the core `FeatureExtractor`.
-- **Validation**: Introduced rigorous end-to-end and reproducibility tests. Evaluates Hit@K and Baseline comparisons natively.
-- **Strict Leakage Guard**: Comprehensive structural tests explicitly block metadata/future state leakage, ensuring ARGUS functions purely on observational graph states.
+## 14. Phase 6 AI Investigator Layer
+Phase 6 bridges raw structural intelligence with a human-readable investigation output:
+- **Investigation Orchestrator**: Aggregates Phase 0-5 intelligence into a single `InvestigationCase`.
+- **AI Investigator**: Translates structured evidence into an Investigator Brief and SAR Draft.
+- **LLM Guardrails**: The prompt strictly explicitly prevents the LLM from fabricating entities, amounts, or inferring guilt. Evidence is separated cleanly into observed, inferred, and predicted.
+- **Deterministic Fallback**: If `OPENAI_API_KEY` is missing or the request fails, the pipeline silently falls back to a deterministic string builder, ensuring the demo works flawlessly without an active OpenAI subscription.
 
 ## 15. Limitations and Security
 - **Simulator Constraints**: The data is a deterministic simulation. Production would require integration with live banking streams.
 - **ML Component**: Only the Isolation Forest constitutes machine learning. Genome, Echo, Surgery, and Prediction are all structural graph heuristics.
-- **Security**: Please create a `.env` file if injecting `OPENAI_API_KEY`. DO NOT commit API keys to version control.
+- **Security**: Please create a `.env` file if injecting `OPENAI_API_KEY`. DO NOT commit API keys to version control. The LLM receives strictly clamped metadata, mitigating prompt injection via transaction fields.
 
 ## 16. Local Demo Instructions
 **Backend:**

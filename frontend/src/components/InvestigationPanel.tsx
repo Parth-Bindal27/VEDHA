@@ -63,16 +63,28 @@ export default function InvestigationPanel({ anomalies, invCase }: { anomalies: 
           <div className="mb-6">
             <h3 className="text-xs text-slate-500 font-mono mb-2">CRIME GENOME</h3>
             <div className="bg-slate-900/50 border border-slate-800 p-4 rounded-lg">
-               <div className="text-center mb-3">
+               <div className="text-center mb-4">
                  <div className="text-2xl text-red-400 font-bold">{genome.overall_score.toFixed(0)}</div>
-                 <div className="text-xs text-slate-500">BEHAVIOURAL RISK</div>
+                 <div className="text-xs text-slate-500">STRUCTURAL RISK FINGERPRINT</div>
                </div>
-               <div className="space-y-2 text-xs font-mono">
-                 <div className="flex justify-between"><span>FAN-IN</span><span className="text-slate-300">{genome.signals.fan_in.toFixed(0)}</span></div>
-                 <div className="flex justify-between"><span>FAN-OUT</span><span className="text-slate-300">{genome.signals.fan_out.toFixed(0)}</span></div>
-                 <div className="flex justify-between"><span>LAYERING</span><span className="text-slate-300">{genome.signals.layering.toFixed(0)}</span></div>
-                 <div className="flex justify-between"><span>INTERMEDIARY REUSE</span><span className="text-slate-300">{genome.signals.intermediary_reuse.toFixed(0)}</span></div>
-                 <div className="flex justify-between"><span>TEMPORAL SYNC</span><span className="text-slate-300">{genome.signals.temporal_synchrony.toFixed(0)}</span></div>
+               <div className="space-y-3 text-xs font-mono">
+                 {[
+                   { label: "FAN-IN", value: genome.signals.fan_in },
+                   { label: "FAN-OUT", value: genome.signals.fan_out },
+                   { label: "LAYERING", value: genome.signals.layering },
+                   { label: "INTERMEDIARY REUSE", value: genome.signals.intermediary_reuse },
+                   { label: "TEMPORAL SYNC", value: genome.signals.temporal_synchrony }
+                 ].map((sig, i) => (
+                   <div key={i}>
+                     <div className="flex justify-between mb-1">
+                       <span className="text-slate-400">{sig.label}</span>
+                       <span className="text-slate-300">{sig.value.toFixed(0)}</span>
+                     </div>
+                     <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                       <div className="bg-emerald-500 h-full" style={{ width: `${Math.min(100, sig.value)}%` }}></div>
+                     </div>
+                   </div>
+                 ))}
                </div>
             </div>
           </div>
@@ -82,26 +94,29 @@ export default function InvestigationPanel({ anomalies, invCase }: { anomalies: 
         {surgery && surgery.candidates.length > 0 && (
           <div className="mb-6">
             <h3 className="text-xs text-slate-500 font-mono mb-2 flex items-center gap-2"><GitCommit size={12}/> NETWORK SURGERY</h3>
-            <div className="bg-slate-900/50 border border-slate-800 rounded-lg overflow-hidden">
-               <table className="w-full text-xs font-mono text-left">
-                 <thead className="bg-slate-800 text-slate-400">
-                   <tr>
-                     <th className="p-2">Candidate</th>
-                     <th className="p-2 text-right">Disruption Impact</th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                   {surgery.candidates.slice(0,3).map((c: any, i: number) => (
-                     <tr key={i} className="border-b border-slate-800/50 last:border-0">
-                       <td className="p-2 text-slate-300">{c.node_id}</td>
-                       <td className="p-2 text-right text-red-400">{c.disruption_impact.toFixed(1)}</td>
-                     </tr>
-                   ))}
-                 </tbody>
-               </table>
-            </div>
-            <div className="mt-2 text-xs text-slate-400">
-              {surgery.candidates[0].evidence.map((e: string, i: number) => <div key={i}>• {e}</div>)}
+            <div className="bg-slate-900/50 border border-slate-800 p-4 rounded-lg overflow-hidden">
+               <div className="text-[10px] text-slate-500 font-mono mb-3 uppercase">Structural Analysis — Not Causal Proof</div>
+               <div className="flex justify-between items-center bg-black/40 border border-slate-800 p-3 rounded mb-3">
+                 <div className="text-center">
+                   <div className="text-slate-500 text-[10px] mb-1 font-mono">BEFORE</div>
+                   <div className="w-8 h-8 rounded-full border-2 border-red-500 mx-auto flex items-center justify-center opacity-80 bg-red-900/20"><GitCommit size={14} className="text-red-400"/></div>
+                 </div>
+                 <div className="text-slate-600">→</div>
+                 <div className="text-center">
+                   <div className="text-slate-500 text-[10px] mb-1 font-mono">SURGERY</div>
+                   <div className="text-xs font-mono text-purple-400">Remove {surgery.candidates[0].node_id}</div>
+                 </div>
+                 <div className="text-slate-600">→</div>
+                 <div className="text-center">
+                   <div className="text-slate-500 text-[10px] mb-1 font-mono">AFTER</div>
+                   <div className="w-8 h-8 rounded-full border-2 border-slate-700 border-dashed mx-auto flex items-center justify-center opacity-30"><GitCommit size={14} className="text-slate-600"/></div>
+                 </div>
+               </div>
+               
+               <div className="flex justify-between items-center text-xs font-mono px-1">
+                 <span className="text-slate-400">Disruption Impact:</span>
+                 <span className="text-purple-400 font-bold">{surgery.candidates[0].disruption_impact.toFixed(1)}</span>
+               </div>
             </div>
           </div>
         )}

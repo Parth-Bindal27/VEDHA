@@ -38,8 +38,13 @@ investigation_orchestrator = InvestigationOrchestrator()
 clients = set()
 
 active_stream_task = None
+is_paused = False
+sim_speed = 0.05
 
 def reset_all():
+    global is_paused, sim_speed
+    is_paused = False
+    sim_speed = 0.05
     simulator.reset()
     graph_engine.reset()
     feature_extractor.__init__()
@@ -58,20 +63,33 @@ async def health_check():
 
 @app.websocket("/ws/stream")
 async def websocket_endpoint(websocket: WebSocket):
-    global active_stream_task
+    global active_stream_task, is_paused, sim_speed
     await websocket.accept()
     clients.add(websocket)
     try:
         while True:
             data = await websocket.receive_text()
             if data == "start":
+                is_paused = False
                 if active_stream_task is None or active_stream_task.done():
                     active_stream_task = asyncio.create_task(run_simulation())
+            elif data == "pause":
+                is_paused = True
+            elif data == "play":
+                is_paused = False
+            elif data == "speed_1x":
+                sim_speed = 0.1
+            elif data == "speed_2x":
+                sim_speed = 0.05
+            elif data == "speed_4x":
+                sim_speed = 0.01
             elif data == "reset":
                 if active_stream_task and not active_stream_task.done():
                     active_stream_task.cancel()
                 reset_all()
                 await broadcast_state()
+            else:
+                await websocket.send_text(f"Received: {data}")
     except WebSocketDisconnect:
         clients.remove(websocket)
 
@@ -166,6 +184,8 @@ async def run_simulation():
                 )
             
             await broadcast_state(event, intelligence)
-            await asyncio.sleep(0.05)
+            while is_paused:
+                await asyncio.sleep(0.1)
+            await asyncio.sleep(sim_speed)
     except asyncio.CancelledError:
         pass
