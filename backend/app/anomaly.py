@@ -15,7 +15,8 @@ class BehavioralAnomalyDetector:
         feature_keys = [
             "tx_velocity", "total_sent", "total_received", 
             "mean_amount", "std_amount", "in_degree", 
-            "out_degree", "burstiness", "counterparty_novelty"
+            "out_degree", "burstiness", "counterparty_novelty",
+            "centrality", "temporal_motif_score"
         ]
         
         X = []

@@ -28,10 +28,10 @@ export default function LiveGraph({ graphData, anomalies }: { graphData: any; an
         graphData={graphData}
         nodeColor={(node: any) => (isAnomalous(node.id) ? "rgba(239, 68, 68, 1)" : "rgba(56, 189, 248, 0.7)")}
         nodeRelSize={6}
-        linkColor={(link: any) => "rgba(255, 255, 255, 0.1)"}
-        linkWidth={1}
-        linkDirectionalParticles={(link: any) => (link.amount > 5000 ? 4 : 2)}
-        linkDirectionalParticleWidth={(link: any) => (link.amount > 5000 ? 2 : 1)}
+        linkColor={(link: any) => link.predicted ? "rgba(239, 68, 68, 0.8)" : "rgba(255, 255, 255, 0.1)"}
+        linkWidth={(link: any) => link.predicted ? 2 : 1}
+        linkDirectionalParticles={(link: any) => link.predicted ? 0 : (link.amount > 5000 ? 4 : 2)}
+        linkDirectionalParticleWidth={(link: any) => link.predicted ? 0 : (link.amount > 5000 ? 2 : 1)}
         linkDirectionalParticleSpeed={0.01}
         backgroundColor="#050505"
         enableNodeDrag={false}

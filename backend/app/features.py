@@ -42,6 +42,43 @@ class FeatureExtractor:
             # Simple counterparty novelty
             f["counterparty_novelty"] = (f["in_degree"] + f["out_degree"]) / max(1, f["tx_velocity"])
 
+        # Subgraph for Centrality and Motifs
+        import networkx as nx
+        G_recent = nx.DiGraph()
+        for tx in recent_txs:
+            if not G_recent.has_edge(tx.sender, tx.receiver):
+                G_recent.add_edge(tx.sender, tx.receiver, weight=0)
+            G_recent[tx.sender][tx.receiver]["weight"] += 1
+            
+        if G_recent.number_of_nodes() > 0:
+            # Betweenness Centrality
+            try:
+                centrality = nx.betweenness_centrality(G_recent)
+            except:
+                centrality = {n: 0.0 for n in G_recent.nodes()}
+                
+            for node in nodes:
+                features[node]["centrality"] = centrality.get(node, 0.0)
+                
+            # Temporal Motif Signals
+            for node in nodes:
+                motif_score = 0.0
+                if node in G_recent:
+                    # Fan-In Motif
+                    if G_recent.in_degree(node) >= 2:
+                        motif_score += 0.3
+                    # Fan-Out Motif
+                    if G_recent.out_degree(node) >= 2:
+                        motif_score += 0.3
+                    # 2-hop chain passing through node
+                    if G_recent.in_degree(node) > 0 and G_recent.out_degree(node) > 0:
+                        motif_score += 0.4
+                features[node]["temporal_motif_score"] = min(1.0, motif_score)
+        else:
+            for node in nodes:
+                features[node]["centrality"] = 0.0
+                features[node]["temporal_motif_score"] = 0.0
+
         return features
 
     def _base_features(self):

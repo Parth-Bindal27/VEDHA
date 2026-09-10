@@ -22,12 +22,18 @@ export default function InvestigationPanel({ anomalies, invCase }: { anomalies: 
   return (
     <div className="h-full flex flex-col bg-black/40 border border-red-900/40 rounded-xl overflow-hidden relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-red-500 animate-pulse"></div>
-      <div className="p-4 border-b border-slate-800 bg-red-950/20 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-red-400 tracking-wider flex items-center gap-2">
-          <ShieldAlert size={16} />
-          AI INVESTIGATOR
-        </h2>
-        <span className="text-xs font-mono bg-red-500/20 text-red-400 px-2 py-1 rounded">{action}</span>
+      <div className="p-4 border-b border-slate-800 bg-red-950/20 flex flex-col justify-between">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-sm font-semibold text-red-400 tracking-wider flex items-center gap-2">
+            <ShieldAlert size={16} />
+            AI INVESTIGATOR
+          </h2>
+          <span className="text-xs font-mono bg-red-500/20 text-red-400 px-2 py-1 rounded">{action}</span>
+        </div>
+        <div className="flex items-center justify-between">
+           <span className="text-xs text-slate-400 font-mono">INVESTIGATION PRIORITY</span>
+           <span className="text-lg text-red-400 font-bold font-mono">{invCase.investigation_priority.toFixed(1)}/100</span>
+        </div>
       </div>
       
       <div className="p-5 flex-1 overflow-y-auto custom-scrollbar">
@@ -96,6 +102,52 @@ export default function InvestigationPanel({ anomalies, invCase }: { anomalies: 
             </div>
             <div className="mt-2 text-xs text-slate-400">
               {surgery.candidates[0].evidence.map((e: string, i: number) => <div key={i}>• {e}</div>)}
+            </div>
+          </div>
+        )}
+        {/* PREDICTION */}
+        {invCase?.predicted_next_edges && invCase.predicted_next_edges.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xs text-slate-500 font-mono mb-2">NEXT-EDGE PREDICTION</h3>
+            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-3">
+               <div className="text-xs font-mono text-slate-400 mb-1">LIKELY NEXT MOVEMENT</div>
+               <div className="text-sm font-bold text-red-400 mb-2">
+                 {invCase.predicted_next_edges[0].source} → {invCase.predicted_next_edges[0].target}
+               </div>
+               <div className="flex justify-between text-xs font-mono mb-2">
+                 <span>Score: <span className="text-slate-300">{invCase.predicted_next_edges[0].prediction_score.toFixed(1)}</span></span>
+                 <span>Amt: <span className="text-slate-300">${invCase.predicted_next_edges[0].estimated_amount_range.min} - ${invCase.predicted_next_edges[0].estimated_amount_range.max}</span></span>
+               </div>
+               <div className="text-xs text-slate-500">
+                 {invCase.predicted_next_edges[0].evidence.map((e: string, i: number) => <div key={i}>• {e}</div>)}
+               </div>
+            </div>
+          </div>
+        )}
+
+        {/* INVESTIGATOR REPORT */}
+        {invCase?.investigator_report && (
+          <div className="mb-6">
+            <h3 className="text-xs text-slate-500 font-mono mb-2">INVESTIGATOR BRIEF</h3>
+            <div className="bg-red-950/20 border border-red-900/40 rounded-lg p-4 text-xs font-mono text-slate-300 space-y-3">
+              <div><strong className="text-red-400">SUMMARY:</strong> {invCase.investigator_report.summary}</div>
+              <div>
+                <strong className="text-red-400">KEY FINDINGS:</strong>
+                {invCase.investigator_report.key_findings.map((f: string, i: number) => <div key={i} className="ml-2">• {f}</div>)}
+              </div>
+              <div className="bg-red-500/10 p-2 border border-red-500/20 mt-3 text-center">
+                 <div className="text-red-400 font-bold tracking-widest">{invCase.investigator_report.recommended_action}</div>
+                 {invCase.investigator_report.human_review_required && <div className="text-[10px] text-red-500/70 mt-1">HUMAN REVIEW REQUIRED</div>}
+              </div>
+              
+              {invCase.investigator_report.sar_draft && (
+                <div className="mt-4 border-t border-slate-800/50 pt-3">
+                  <div className="text-xs font-mono text-red-500 mb-2">SAR DRAFT PREVIEW:</div>
+                  <div className="bg-black/50 p-3 rounded text-[10px] text-slate-400 font-mono whitespace-pre-wrap">
+                    {invCase.investigator_report.sar_draft}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

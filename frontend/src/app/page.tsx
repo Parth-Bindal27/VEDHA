@@ -31,7 +31,13 @@ export default function Dashboard() {
         setCurrentPhase(0);
         setInvestigationCase(null);
       } else if (data.type === "transaction" && data.transaction_event) {
-        setGraphData({ nodes: data.graph.nodes, links: data.graph.edges });
+        let edges = [...data.graph.edges];
+        if (data.intelligence && data.intelligence.predictions) {
+          data.intelligence.predictions.forEach((p: any) => {
+            edges.push({ source: p.source, target: p.target, predicted: true, value: 1 });
+          });
+        }
+        setGraphData({ nodes: data.graph.nodes, links: edges });
         setTransactions((prev) => [...prev, data.transaction_event.transaction]);
         setCurrentPhase(data.transaction_event.metadata.phase);
         

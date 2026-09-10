@@ -81,7 +81,25 @@ class NetworkSurgery(BaseModel):
     baseline_score: float
     candidates: List[SurgeryCandidate]
 
+class PredictedEdge(BaseModel):
+    source: str
+    target: str
+    prediction_score: float
+    estimated_amount_range: Dict[str, float]
+    evidence: List[str]
+
+class InvestigatorReport(BaseModel):
+    summary: str
+    key_findings: List[str]
+    network_patterns: List[str]
+    critical_nodes: List[Dict[str, Any]]
+    recommended_action: str
+    human_review_required: bool
+    sar_draft: Optional[str] = None
+
 class InvestigationCase(BaseModel):
+    case_id: str
+    title: str
     investigation_priority: float
     top_suspicious_nodes: List[Dict[str, Any]]
     coordination_evidence: List[str]
@@ -89,7 +107,10 @@ class InvestigationCase(BaseModel):
     crime_genome: Optional[CrimeGenome]
     echo_reconstruction: Optional[EchoReconstruction]
     network_surgery: Optional[NetworkSurgery]
+    predicted_next_edges: List[PredictedEdge]
+    investigator_report: Optional[InvestigatorReport]
     recommended_action: str
+    human_review_required: bool
 
 class IntelligenceSnapshot(BaseModel):
     timestamp: float
@@ -99,6 +120,8 @@ class IntelligenceSnapshot(BaseModel):
     phase_change: Optional[PhaseChangeEvent] = None
     top_suspicious_nodes: List[Dict[str, Any]]
     investigation_case: Optional[InvestigationCase] = None
+    predictions: List[PredictedEdge] = []
+    investigator_report: Optional[InvestigatorReport] = None
 
 class StreamPayload(BaseModel):
     type: str

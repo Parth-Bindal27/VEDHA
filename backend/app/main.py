@@ -10,6 +10,7 @@ from app.phase_transition import PhaseTransitionDetector
 from app.crime_genome import CrimeGenomeDetector
 from app.echo import EchoReconstructor
 from app.surgery import NetworkSurgeryAnalyzer
+from app.prediction import NextEdgePredictor
 from app.investigation import InvestigationOrchestrator
 from app.schemas import StreamPayload, IntelligenceSnapshot
 
@@ -32,6 +33,7 @@ phase_detector = PhaseTransitionDetector()
 crime_genome_detector = CrimeGenomeDetector()
 echo_reconstructor = EchoReconstructor()
 surgery_analyzer = NetworkSurgeryAnalyzer()
+edge_predictor = NextEdgePredictor()
 investigation_orchestrator = InvestigationOrchestrator()
 clients = set()
 
@@ -47,6 +49,7 @@ def reset_all():
     crime_genome_detector.__init__()
     echo_reconstructor.__init__()
     surgery_analyzer.__init__()
+    edge_predictor.__init__()
     investigation_orchestrator.__init__()
 
 @app.get("/health")
@@ -144,8 +147,10 @@ async def run_simulation():
                 surgery = surgery_analyzer.analyze(graph_engine.G, cluster_id, priority, suspicious_node_ids)
                 echo = echo_reconstructor.reconstruct(cluster_id)
                 
+                predictions = edge_predictor.predict(current_time, graph_engine.G, feature_extractor.history, suspicious_node_ids)
+                
                 investigation_case = investigation_orchestrator.generate_case(
-                    top_suspicious, clusters, genome, echo, surgery
+                    top_suspicious, clusters, genome, echo, surgery, predictions
                 )
                 
                 intelligence = IntelligenceSnapshot(
@@ -155,7 +160,9 @@ async def run_simulation():
                     network_change_score=phase_change.change_score if phase_change else 0.0,
                     phase_change=phase_change,
                     top_suspicious_nodes=top_suspicious,
-                    investigation_case=investigation_case
+                    investigation_case=investigation_case,
+                    predictions=predictions,
+                    investigator_report=investigation_case.investigator_report
                 )
             
             await broadcast_state(event, intelligence)
