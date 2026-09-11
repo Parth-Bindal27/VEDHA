@@ -71,8 +71,13 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             if data == "start":
                 is_paused = False
-                if active_stream_task is None or active_stream_task.done():
-                    active_stream_task = asyncio.create_task(run_simulation())
+                if active_stream_task and not active_stream_task.done():
+                    active_stream_task.cancel()
+                    try:
+                        await active_stream_task
+                    except asyncio.CancelledError:
+                        pass
+                active_stream_task = asyncio.create_task(run_simulation())
             elif data == "pause":
                 is_paused = True
             elif data == "play":
@@ -86,12 +91,16 @@ async def websocket_endpoint(websocket: WebSocket):
             elif data == "reset":
                 if active_stream_task and not active_stream_task.done():
                     active_stream_task.cancel()
+                    try:
+                        await active_stream_task
+                    except asyncio.CancelledError:
+                        pass
                 reset_all()
                 await broadcast_state()
             else:
                 await websocket.send_text(f"Received: {data}")
     except WebSocketDisconnect:
-        clients.remove(websocket)
+        clients.discard(websocket)
 
 async def broadcast_state(event=None, intelligence=None):
     if event:
@@ -117,9 +126,10 @@ async def broadcast_state(event=None, intelligence=None):
             stale_clients.add(client)
     
     for client in stale_clients:
-        clients.remove(client)
+        clients.discard(client)
 
 async def run_simulation():
+    reset_all()
     try:
         tx_count = 0
         recent_tx_count = 0

@@ -28,11 +28,11 @@ export default function LandingPage() {
         </div>
         
         <div className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.05] rounded-full p-1 backdrop-blur-md">
-          <Link href="#" className="px-5 py-2 rounded-full bg-white/10 text-sm font-medium">Home</Link>
-          <Link href="#" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">How It Works</Link>
-          <Link href="#" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">Features</Link>
-          <Link href="#" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">Demo</Link>
-          <Link href="#" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">About</Link>
+          <a href="#" className="px-5 py-2 rounded-full bg-white/10 text-sm font-medium">Home</a>
+          <a href="#how-it-works" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">How It Works</a>
+          <a href="#features" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">Features</a>
+          <a href="#mission" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">Mission</a>
+          <a href="#impact" className="px-5 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-colors">Impact</a>
         </div>
         
         <Link href="/console" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 text-sm font-semibold flex items-center gap-2 hover:shadow-[0_0_20px_rgba(232,121,249,0.3)] transition-all">
@@ -46,7 +46,7 @@ export default function LandingPage() {
       <main className="relative z-10 max-w-7xl mx-auto px-8">
         
         {/* Hero Section */}
-        <section className="pt-24 pb-32 grid lg:grid-cols-2 gap-12 items-center">
+        <section id="how-it-works" className="pt-24 pb-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="inline-flex items-center gap-3 px-1 py-1 rounded-full mb-8">
               <span className="text-[10px] tracking-[0.2em] uppercase font-semibold text-white/50">AI POWERED <span className="text-white/20 mx-2">•</span> NETWORK INTELLIGENCE <span className="text-white/20 mx-2">•</span> HUMAN IN THE LOOP</span>
@@ -187,7 +187,7 @@ export default function LandingPage() {
         </section>
 
         {/* Features Row */}
-        <section className="py-20">
+        <section id="features" className="py-20">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
               { icon: <GitGraph className="w-5 h-5 text-blue-400"/>, title: "Temporal Graph Intelligence", desc: "Model how accounts interact and evolve over time." },
@@ -210,7 +210,7 @@ export default function LandingPage() {
         </section>
 
         {/* Mission Section */}
-        <section className="py-20 relative">
+        <section id="mission" className="py-20 relative">
           <div className="bg-white/[0.02] border border-white/[0.05] rounded-[2rem] p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-12 overflow-hidden relative">
             <div className="flex-1 relative z-10">
               <span className="text-[10px] tracking-[0.2em] uppercase font-semibold text-white/40 mb-6 block">OUR MISSION</span>
@@ -256,7 +256,7 @@ export default function LandingPage() {
         </section>
         
         {/* Built for Impact */}
-        <section className="py-24 text-center">
+        <section id="impact" className="py-24 text-center">
            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] tracking-[0.2em] uppercase font-semibold text-white/60 mb-8">
              BUILT FOR IMPACT
            </div>
