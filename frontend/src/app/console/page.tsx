@@ -19,7 +19,7 @@ export default function Dashboard() {
     if (!wsUrl) {
        // fallback for local dev if env not set
        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-       const host = window.location.hostname === "localhost" ? "localhost:8000" : window.location.host;
+       const host = window.location.hostname === "localhost" ? "127.0.0.1:8000" : window.location.host;
        wsUrl = `${protocol}//${host}/ws/stream`;
     }
     wsRef.current = new WebSocket(wsUrl);

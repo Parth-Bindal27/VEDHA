@@ -1,69 +1,171 @@
 "use client";
 
 import Link from "next/link";
-import NetworkVisualization from "./NetworkVisualization";
 
 export default function HeroSection() {
   return (
-    <section id="overview" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
       {/* Background layers */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050510] via-[#050520] to-[#050510]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,211,238,0.03)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050510] via-[#0a0520] to-[#050510]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.05)_0%,transparent_70%)]" />
 
-      {/* Network canvas */}
-      <div className="absolute inset-0 pointer-events-none">
-        <NetworkVisualization />
+      {/* Grid background */}
+      <div className="absolute inset-0 opacity-[0.015]">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
       </div>
 
-      {/* Foreground content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        {/* Eyebrow */}
-        <div className="animate-fade-in-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8 text-[11px] tracking-[0.25em] text-cyan-400/80 font-mono uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse-glow" />
-          Temporal Intelligence Engine
-        </div>
+      {/* Glowing orbs */}
+      <div className="absolute top-40 right-1/4 w-96 h-96 rounded-full bg-purple-600/20 blur-3xl" />
+      <div className="absolute bottom-40 left-1/4 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl" />
 
-        {/* Headline */}
-        <h1 className="animate-fade-in-up delay-100 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
-          <span className="text-white">See the </span>
-          <span className="text-gradient-cyan">Network</span>
-          <br />
-          <span className="text-white">Before It Becomes a </span>
-          <span className="text-gradient-cyan">Threat.</span>
-        </h1>
+      {/* Content wrapper */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left content */}
+          <div>
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
+              <span className="text-xs tracking-[0.2em] text-white font-semibold">AI POWERED</span>
+              <span className="text-white/40">•</span>
+              <span className="text-xs tracking-[0.2em] text-white font-semibold">NETWORK INTELLIGENCE</span>
+              <span className="text-white/40">•</span>
+              <span className="text-xs tracking-[0.2em] text-white font-semibold">HUMAN IN THE LOOP</span>
+            </div>
 
-        {/* Subheadline */}
-        <p className="animate-fade-in-up delay-200 max-w-2xl mx-auto text-base sm:text-lg text-slate-400 leading-relaxed mb-10">
-          ARGUS ECHO detects behavioral anomalies, reconstructs emerging networks,
-          and predicts their next structural movement — before conventional rules catch up.
-        </p>
+            {/* Headline */}
+            <h1 className="text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6">
+              <span className="text-white">From Transactions</span>
+              <br />
+              <span className="to-purple-500 from-pink-500 bg-gradient-to-r bg-clip-text text-transparent">to Truth</span>
+            </h1>
 
-        {/* CTAs */}
-        <div className="animate-fade-in-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-          <Link
-            href="/console"
-            className="group px-8 py-3.5 text-[13px] font-semibold tracking-wider text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-400 flex items-center gap-2"
-          >
-            Enter Intelligence Console
-            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <a
-            href="#research"
-            className="px-8 py-3.5 text-[13px] font-semibold tracking-wider text-slate-300 glass rounded-full hover:border-slate-500 transition-all duration-300"
-          >
-            Explore the Research
-          </a>
-        </div>
+            {/* Subheadline */}
+            <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-lg">
+              ARGUS ECHO detects hidden financial networks by understanding how transactions, people and patterns evolve over time.
+            </p>
 
-        {/* Badges */}
-        <div className="animate-fade-in-up delay-400 flex items-center justify-center gap-3 text-[10px] tracking-[0.3em] text-slate-600 font-mono uppercase">
-          <span>Unsupervised</span>
-          <span className="text-cyan-700">•</span>
-          <span>Temporal</span>
-          <span className="text-cyan-700">•</span>
-          <span>Explainable</span>
+            {/* Trusted badge */}
+            <div className="text-sm text-slate-400 mb-8 font-medium">
+              Trusted for a safer, more transparent financial future
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <Link
+                href="/console"
+                className="group px-8 py-3 text-base font-semibold tracking-wider text-white bg-gradient-to-r from-pink-500 to-purple-600 rounded-full hover:shadow-2xl hover:shadow-pink-500/30 transition-all duration-300 flex items-center gap-2"
+              >
+                Launch Investigation
+                <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <button className="group px-8 py-3 text-base font-semibold tracking-wider text-white border border-white/30 rounded-full hover:bg-white/5 transition-all duration-300 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Watch Demo
+              </button>
+            </div>
+          </div>
+
+          {/* Right - Globe with annotations */}
+          <div className="relative h-96 lg:h-[500px] flex items-center justify-center">
+            {/* Animated globe SVG */}
+            <div className="relative w-full h-full max-w-md">
+              {/* Globe */}
+              <svg className="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="globeGradient" cx="35%" cy="35%">
+                    <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
+                    <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#1e1b4b" stopOpacity="0.1" />
+                  </radialGradient>
+                </defs>
+                {/* Main globe circle */}
+                <circle cx="200" cy="200" r="160" fill="url(#globeGradient)" stroke="#6366f1" strokeWidth="1" opacity="0.3" />
+                {/* Glow circle */}
+                <circle cx="200" cy="200" r="160" fill="none" stroke="#a78bfa" strokeWidth="2" opacity="0.2" />
+                
+                {/* Network points and lines */}
+                <circle cx="200" cy="140" r="8" fill="#ec4899" opacity="0.8" />
+                <circle cx="250" cy="200" r="8" fill="#ec4899" opacity="0.7" />
+                <circle cx="200" cy="260" r="8" fill="#06b6d4" opacity="0.6" />
+                <circle cx="150" cy="200" r="8" fill="#06b6d4" opacity="0.5" />
+                
+                {/* Lines connecting points */}
+                <line x1="200" y1="140" x2="250" y2="200" stroke="#a78bfa" strokeWidth="1" opacity="0.3" />
+                <line x1="250" y1="200" x2="200" y2="260" stroke="#a78bfa" strokeWidth="1" opacity="0.3" />
+                <line x1="200" y1="260" x2="150" y2="200" stroke="#a78bfa" strokeWidth="1" opacity="0.3" />
+                <line x1="150" y1="200" x2="200" y2="140" stroke="#a78bfa" strokeWidth="1" opacity="0.3" />
+                
+                {/* Extra nodes */}
+                <circle cx="220" cy="160" r="4" fill="#60a5fa" opacity="0.5" />
+                <circle cx="240" cy="230" r="5" fill="#ec4899" opacity="0.4" />
+                <circle cx="170" cy="240" r="4" fill="#06b6d4" opacity="0.5" />
+              </svg>
+
+              {/* Floating annotation boxes */}
+              {/* Network Detected */}
+              <div className="absolute top-8 right-12 bg-slate-900/80 backdrop-blur border border-white/10 rounded-lg px-3 py-2 w-40">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Network Detected</div>
+                    <div className="text-xs text-slate-400">Hidden relationships identified</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Anomaly Detected */}
+              <div className="absolute top-24 right-0 bg-slate-900/80 backdrop-blur border border-white/10 rounded-lg px-3 py-2 w-40">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M12 9v2m0 4v2m0-12a9 9 0 110 18 9 9 0 010-18z" />
+                  </svg>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Anomaly Detected</div>
+                    <div className="text-xs text-slate-400">Unusual transaction behavior identified</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pattern Recognised */}
+              <div className="absolute bottom-32 right-8 bg-slate-900/80 backdrop-blur border border-white/10 rounded-lg px-3 py-2 w-40">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Pattern Recognised</div>
+                    <div className="text-xs text-slate-400">Structural fingerprint of financial crime</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Prediction Generated */}
+              <div className="absolute bottom-16 left-12 bg-slate-900/80 backdrop-blur border border-white/10 rounded-lg px-3 py-2 w-40">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Prediction Generated</div>
+                    <div className="text-xs text-slate-400">Likely next movement predicted from network</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
